@@ -12,39 +12,55 @@
     }
 
     :root {
-      --primary: #2563eb;
-      --primary-light: #3b82f6;
-      --secondary: #64748b;
-      --accent: #f59e0b;
-      --gray-50: #f8fafc;
-      --gray-100: #f1f5f9;
-      --gray-200: #e2e8f0;
-      --gray-600: #475569;
-      --gray-800: #1e293b;
-      --white: #ffffff;
+      --primary: #64ffda;
+      --primary-dark: #4ecdc4;
+      --secondary: #ff6b6b;
+      --accent: #4ecdc4;
+      --bg-primary: #0a192f;
+      --bg-secondary: #112240;
+      --bg-card: #1a2332;
+      --text-primary: #e6f1ff;
+      --text-secondary: #8892b0;
+      --text-muted: #495670;
+      --border: #233554;
+      --shadow: rgba(2, 12, 27, 0.7);
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       line-height: 1.6;
-      color: var(--gray-800);
-      background: var(--gray-50);
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      overflow-x: hidden;
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
     }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 1rem;
+      padding: 0 2rem;
     }
 
     /* Header */
     .header {
-      background: var(--white);
-      border-bottom: 1px solid var(--gray-200);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      background: rgba(10, 25, 47, 0.95);
       backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .header.scrolled {
+      background: rgba(10, 25, 47, 0.98);
+      box-shadow: 0 10px 30px -10px var(--shadow);
     }
 
     .header-content {
@@ -52,6 +68,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 1rem 0;
+      min-height: 70px;
     }
 
     .logo {
@@ -68,20 +85,22 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-weight: 600;
+      color: var(--bg-primary);
+      font-weight: 700;
       font-size: 1.2rem;
+      box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
     }
 
     .header-info h1 {
-      font-size: 1.25rem;
+      font-size: 1.4rem;
       font-weight: 700;
-      color: var(--gray-800);
+      color: var(--text-primary);
+      margin-bottom: 0.2rem;
     }
 
     .header-info .title {
-      font-size: 0.875rem;
-      color: var(--secondary);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
     }
 
     /* Navigation */
@@ -92,244 +111,414 @@
 
     .nav a {
       text-decoration: none;
-      color: var(--secondary);
+      color: var(--text-secondary);
       font-weight: 500;
-      padding: 0.5rem 1rem;
+      padding: 0.8rem 1.5rem;
       border-radius: 0.5rem;
-      transition: all 0.2s;
+      transition: all 0.3s ease;
+      position: relative;
+      font-size: 0.95rem;
     }
 
     .nav a:hover,
     .nav a.active {
+      color: var(--primary);
+      background: rgba(100, 255, 218, 0.1);
+    }
+
+    .nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
       background: var(--primary);
-      color: white;
+      transform: translateX(-50%);
+      transition: width 0.3s ease;
+    }
+
+    .nav a:hover::after,
+    .nav a.active::after {
+      width: 80%;
     }
 
     /* Hero Section */
     .hero {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-      color: white;
-      padding: 4rem 0;
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      padding: 8rem 0 6rem;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(100, 255, 218, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
     }
 
     .hero h1 {
-      font-size: 2.5rem;
+      font-size: 3.5rem;
       font-weight: 800;
       margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--text-primary), var(--primary));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+    }
+
+    .hero .chinese-name {
+      font-size: 2rem;
+      color: var(--text-secondary);
+      margin-left: 1rem;
     }
 
     .hero .subtitle {
-      font-size: 1.25rem;
-      opacity: 0.9;
+      font-size: 1.4rem;
+      color: var(--primary);
       margin-bottom: 0.5rem;
+      font-weight: 500;
     }
 
     .hero .institution {
-      font-size: 1rem;
-      opacity: 0.8;
-      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
     }
 
     .hero .contact {
       display: flex;
       justify-content: center;
-      gap: 1rem;
+      gap: 1.5rem;
       flex-wrap: wrap;
     }
 
     .contact-btn {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 2rem;
+      background: rgba(100, 255, 218, 0.1);
+      color: var(--primary);
+      padding: 1rem 2rem;
+      border-radius: 3rem;
       text-decoration: none;
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      transition: all 0.3s;
+      border: 1px solid rgba(100, 255, 218, 0.3);
+      transition: all 0.3s ease;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(100, 255, 218, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .contact-btn:hover::before {
+      left: 100%;
     }
 
     .contact-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-2px);
+      background: rgba(100, 255, 218, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(100, 255, 218, 0.2);
     }
 
     /* Main Content */
     .main {
-      padding: 3rem 0;
+      padding: 4rem 0;
     }
 
     .section {
-      margin-bottom: 4rem;
+      margin-bottom: 6rem;
     }
 
     .section-title {
-      font-size: 1.875rem;
+      font-size: 2.2rem;
       font-weight: 700;
-      margin-bottom: 2rem;
-      color: var(--gray-800);
+      margin-bottom: 3rem;
       text-align: center;
+      color: var(--text-primary);
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 2px;
     }
 
     /* Research Grid */
     .research-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
       gap: 2rem;
     }
 
     .research-card {
-      background: var(--white);
+      background: var(--bg-card);
       border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s;
-      border-left: 4px solid var(--primary);
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .research-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
     }
 
     .research-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(2, 12, 27, 0.4);
+      border-color: var(--primary);
+    }
+
+    .research-card:hover::before {
+      background: linear-gradient(90deg, var(--accent), var(--secondary));
     }
 
     .research-card h3 {
-      font-size: 1.25rem;
+      font-size: 1.4rem;
       font-weight: 600;
       margin-bottom: 1rem;
-      color: var(--gray-800);
+      color: var(--text-primary);
     }
 
     .research-card p {
-      color: var(--secondary);
-      margin-bottom: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
     }
 
     .research-status {
       display: inline-block;
-      background: var(--gray-100);
-      color: var(--gray-600);
-      padding: 0.25rem 0.75rem;
-      border-radius: 1rem;
-      font-size: 0.875rem;
-      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .status-published {
-      background: #dcfce7;
-      color: #166534;
+      background: rgba(76, 175, 80, 0.2);
+      color: #4caf50;
+      border: 1px solid rgba(76, 175, 80, 0.3);
     }
 
     .status-progress {
-      background: #fef3c7;
-      color: #92400e;
+      background: rgba(255, 193, 7, 0.2);
+      color: #ffc107;
+      border: 1px solid rgba(255, 193, 7, 0.3);
     }
 
-    /* Publications */
-    .publication {
-      background: var(--white);
-      border-radius: 1rem;
-      padding: 2rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s;
-    }
-
-    .publication:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .publication h3 {
-      font-size: 1.125rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: var(--gray-800);
-    }
-
-    .publication .authors {
-      color: var(--secondary);
-      font-size: 0.875rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .publication .journal {
+    .status-planning {
+      background: rgba(100, 255, 218, 0.2);
       color: var(--primary);
-      font-style: italic;
-      font-size: 0.875rem;
-      margin-bottom: 1rem;
+      border: 1px solid rgba(100, 255, 218, 0.3);
     }
 
-    .publication .description {
-      color: var(--secondary);
-      font-size: 0.875rem;
-    }
-
-    /* Skills */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 1rem;
-    }
-
-    .skill-tag {
-      background: var(--primary);
-      color: white;
-      padding: 0.75rem 1rem;
-      border-radius: 0.5rem;
-      text-align: center;
-      font-weight: 500;
-      font-size: 0.875rem;
-      transition: all 0.3s;
-    }
-
-    .skill-tag:hover {
-      background: var(--primary-light);
-      transform: scale(1.05);
-    }
-
-    /* News/Updates */
+    /* News Items */
     .news-list {
-      space-y: 1rem;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     .news-item {
-      background: var(--white);
-      border-radius: 0.5rem;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
+      background: var(--bg-card);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
       border-left: 4px solid var(--accent);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .news-item:hover {
+      transform: translateX(10px);
+      box-shadow: 0 10px 30px rgba(2, 12, 27, 0.3);
     }
 
     .news-date {
       color: var(--accent);
       font-weight: 600;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .news-content {
-      color: var(--secondary);
-      margin-top: 0.5rem;
+      color: var(--text-secondary);
+      margin-top: 0.8rem;
+      line-height: 1.6;
+    }
+
+    /* Publications */
+    .publication {
+      background: var(--bg-card);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .publication::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--primary), var(--accent));
+      border-radius: 0 1rem 1rem 0;
+    }
+
+    .publication:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(2, 12, 27, 0.3);
+    }
+
+    .publication h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .publication .authors {
+      color: var(--text-secondary);
+      margin-bottom: 0.8rem;
+      font-size: 0.95rem;
+    }
+
+    .publication .authors strong {
+      color: var(--primary);
+    }
+
+    .publication .journal {
+      color: var(--accent);
+      font-style: italic;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .publication .description {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+
+    .skill-tag {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      padding: 1rem 1.5rem;
+      border-radius: 0.8rem;
+      text-align: center;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-tag::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(100, 255, 218, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .skill-tag:hover::before {
+      left: 100%;
+    }
+
+    .skill-tag:hover {
+      background: rgba(100, 255, 218, 0.1);
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      color: var(--primary);
+    }
+
+    /* About Section */
+    .about-card {
+      background: var(--bg-card);
+      border-radius: 1rem;
+      padding: 3rem;
+      border: 1px solid var(--border);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .about-card p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+      font-size: 1.05rem;
     }
 
     /* Footer */
     .footer {
-      background: var(--gray-800);
-      color: white;
-      padding: 3rem 0 2rem;
-      margin-top: 4rem;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      padding: 4rem 0 2rem;
+      margin-top: 6rem;
     }
 
     .footer-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
+      gap: 3rem;
+      margin-bottom: 3rem;
     }
 
     .footer h4 {
       font-weight: 600;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      font-size: 1.1rem;
     }
 
     .footer ul {
@@ -337,44 +526,70 @@
     }
 
     .footer ul li {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.8rem;
     }
 
     .footer a {
-      color: #cbd5e1;
+      color: var(--text-secondary);
       text-decoration: none;
-      transition: color 0.3s;
+      transition: all 0.3s ease;
     }
 
     .footer a:hover {
-      color: white;
+      color: var(--primary);
     }
 
     .footer-bottom {
-      border-top: 1px solid var(--gray-600);
+      border-top: 1px solid var(--border);
       padding-top: 2rem;
       text-align: center;
-      color: #94a3b8;
-      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
     }
 
-    /* Responsive */
+    /* Mobile Responsive */
     @media (max-width: 768px) {
+      .container {
+        padding: 0 1rem;
+      }
+
       .header-content {
         flex-direction: column;
         gap: 1rem;
+        padding: 1rem 0;
       }
 
       .nav {
         gap: 1rem;
       }
 
+      .nav a {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .hero {
+        padding: 6rem 0 4rem;
+      }
+
       .hero h1 {
-        font-size: 2rem;
+        font-size: 2.5rem;
+      }
+
+      .hero .chinese-name {
+        font-size: 1.5rem;
+        display: block;
+        margin: 0.5rem 0;
       }
 
       .hero .subtitle {
-        font-size: 1.125rem;
+        font-size: 1.2rem;
+      }
+
+      .contact {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
       }
 
       .research-grid {
@@ -385,16 +600,31 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .contact {
-        flex-direction: column;
-        align-items: center;
+      .section-title {
+        font-size: 1.8rem;
       }
+    }
+
+    /* Scroll animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.6s ease-out;
     }
   </style>
 </head>
 <body>
   <!-- Header -->
-  <header class="header">
+  <header class="header" id="header">
     <div class="container">
       <div class="header-content">
         <div class="logo">
@@ -417,13 +647,15 @@
   <!-- Hero Section -->
   <section class="hero" id="home">
     <div class="container">
-      <h1>Xi DING <span style="font-size: 1.5rem;">丁曦</span></h1>
-      <div class="subtitle">Computational Animal Breeding & Genetics</div>
-      <div class="institution">Leibniz Institute for Farm Animal Biology (FBN), Germany</div>
-      <div class="contact">
-        <a href="mailto:dingx714@outlook.com" class="contact-btn">dingx714@outlook.com</a>
-        <a href="mailto:ding@fbn-dummerstorf.de" class="contact-btn">ding@fbn-dummerstorf.de</a>
-        <a href="https://www.researchgate.net/profile/Xi-Ding-10" class="contact-btn">ResearchGate</a>
+      <div class="hero-content">
+        <h1>Xi DING <span class="chinese-name">丁曦</span></h1>
+        <div class="subtitle">Computational Animal Breeding & Genetics</div>
+        <div class="institution">Leibniz Institute for Farm Animal Biology (FBN), Germany</div>
+        <div class="contact">
+          <a href="mailto:dingx714@outlook.com" class="contact-btn">dingx714@outlook.com</a>
+          <a href="mailto:ding@fbn-dummerstorf.de" class="contact-btn">ding@fbn-dummerstorf.de</a>
+          <a href="https://www.researchgate.net/profile/Xi-Ding-10" class="contact-btn">ResearchGate</a>
+        </div>
       </div>
     </div>
   </section>
@@ -449,7 +681,7 @@
           <div class="research-card">
             <h3>Genomic Selection Methods</h3>
             <p>Advanced GBLUP methods for high-density SNP data, integrating genomic information with traditional pedigree.</p>
-            <span class="research-status">Planning</span>
+            <span class="research-status status-planning">Planning</span>
           </div>
         </div>
       </section>
@@ -510,7 +742,7 @@
       <!-- About Section -->
       <section class="section" id="about">
         <h2 class="section-title">About</h2>
-        <div class="research-card">
+        <div class="about-card">
           <p>I develop computational methods for animal breeding and genetics at FBN Germany. My work focuses on statistical modeling, machine learning, and genomic analysis to improve livestock breeding efficiency.</p>
           <p>My journey started at China Agricultural University, led me through an exchange at University of Wisconsin, and brought me to Germany for my Master's at University of Rostock. After industry experience at KWS LOCHOW in plant breeding, I returned to research for my PhD at FBN.</p>
           <p>I combine statistical modeling, machine learning, and genomic analysis to solve real problems in animal breeding, always with an eye toward sustainability and global impact.</p>
@@ -551,15 +783,27 @@
   </footer>
 
   <script>
-    // Simple smooth scrolling for navigation
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      if (window.scrollY > 100) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Smooth scrolling for navigation
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+          const headerHeight = document.querySelector('.header').offsetHeight;
+          const targetPosition = target.offsetTop - headerHeight;
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
           });
         }
       });
@@ -572,7 +816,7 @@
       
       let current = '';
       sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
+        const sectionTop = section.offsetTop - 150;
         if (scrollY >= sectionTop) {
           current = section.getAttribute('id');
         }
@@ -584,6 +828,25 @@
           link.classList.add('active');
         }
       });
+    });
+
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all cards and sections
+    document.querySelectorAll('.research-card, .publication, .news-item, .about-card').forEach(el => {
+      observer.observe(el);
     });
   </script>
 </body>
