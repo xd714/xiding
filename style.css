@@ -74,9 +74,9 @@
     .avatar {
       width: 70px;
       height: 70px;
-      border-radius: 50%;
+      border-radius: 60%;
 	  object-fit: cover;
-      object-position: 20% 45%; /* Adjust percentage to focus on face */
+      object-position: 10% 50%;  
       background: linear-gradient(135deg, var(--primary), var(--accent));
       display: flex;
       align-items: center;
