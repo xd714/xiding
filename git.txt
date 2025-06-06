@@ -1,0 +1,4 @@
+git status
+git add .
+git commit -m "Update website with dark theme design"
+git push origin main

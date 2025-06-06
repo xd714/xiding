@@ -76,7 +76,7 @@
       height: 50px;
       border-radius: 50%;
 	  object-fit: cover;
-      object-position: center 20%; /* Adjust percentage to focus on face */
+      object-position: 30% 60%; /* Adjust percentage to focus on face */
       background: linear-gradient(135deg, var(--primary), var(--accent));
       display: flex;
       align-items: center;
