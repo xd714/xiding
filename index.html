@@ -4,14 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Xi DING - Computational Animal Genetics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --primary: #64ffda;
-      --primary-dark: #4ecdc4;
-      --secondary: #ff6b6b;
       --accent: #4ecdc4;
+      --secondary: #ff6b6b;
       --bg-primary: #0a192f;
       --bg-secondary: #112240;
       --bg-card: #1a2332;
@@ -23,22 +24,21 @@
     }
 
     [data-theme="light"] {
-      --primary: #2e7d99;
-      --primary-dark: #1a5f7a;
+      --primary: #0d7377;
+      --accent: #14a085;
       --secondary: #c44569;
-      --accent: #40739e;
-      --bg-primary: #f8f9fa;
+      --bg-primary: #f5f7fa;
       --bg-secondary: #ffffff;
       --bg-card: #ffffff;
-      --text-primary: #2c3e50;
-      --text-secondary: #34495e;
-      --text-muted: #7f8c8d;
-      --border: #e9ecef;
-      --shadow: rgba(0, 0, 0, 0.1);
+      --text-primary: #1a2332;
+      --text-secondary: #3d4f6b;
+      --text-muted: #8892b0;
+      --border: #dde3ed;
+      --shadow: rgba(0,0,0,0.08);
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'DM Sans', sans-serif;
       line-height: 1.6;
       color: var(--text-primary);
       background: var(--bg-primary);
@@ -47,238 +47,418 @@
     }
 
     html { scroll-behavior: smooth; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
 
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-
-    /* Theme toggle */
-    .theme-toggle {
-      position: fixed; top: 20px; right: 20px;
-      width: 50px; height: 50px; border-radius: 50%; border: none;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: var(--bg-primary); font-size: 24px; cursor: pointer;
-      z-index: 1001; box-shadow: 0 5px 15px var(--shadow);
-      transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
-    }
-    .theme-toggle:hover { transform: scale(1.1); box-shadow: 0 8px 20px var(--shadow); }
-
-    /* Header */
+    /* ── HEADER: navigation only ─────────────────────────── */
     .header {
-      background: rgba(10, 25, 47, 0.95); backdrop-filter: blur(10px);
+      background: rgba(10, 25, 47, 0.92);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000; transition: all 0.3s ease;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      transition: all 0.3s ease;
     }
-    [data-theme="light"] .header { background: rgba(255, 255, 255, 0.95); }
-    .header.scrolled { background: rgba(10, 25, 47, 0.98); box-shadow: 0 10px 30px -10px var(--shadow); }
-    [data-theme="light"] .header.scrolled { background: rgba(255, 255, 255, 0.98); }
+    [data-theme="light"] .header { background: rgba(245,247,250,0.95); }
+    .header.scrolled { box-shadow: 0 8px 30px -8px var(--shadow); }
 
     .header-content {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 0; min-height: 70px;
+      height: 62px;
     }
 
-    .logo { display: flex; align-items: center; gap: 1rem; }
-
-    .avatar {
-      width: 70px; height: 70px; border-radius: 60%;
-      object-fit: cover; object-position: 10% 50%;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      display: flex; align-items: center; justify-content: center;
-      color: var(--bg-primary); font-weight: 700; font-size: 1.2rem;
-      box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
-    }
-
-    .header-info h1 { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.2rem; }
-    .header-info .title { font-size: 0.9rem; color: var(--text-secondary); }
-
-    /* Navigation */
-    .nav { display: flex; gap: 2rem; }
-    .nav a {
-      text-decoration: none; color: var(--text-secondary); font-weight: 500;
-      padding: 0.8rem 1.5rem; border-radius: 0.5rem; transition: all 0.3s ease;
-      position: relative; font-size: 0.95rem;
-    }
-    .nav a:hover, .nav a.active { color: var(--primary); background: rgba(100, 255, 218, 0.1); }
-    .nav a::after {
-      content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px;
-      background: var(--primary); transform: translateX(-50%); transition: width 0.3s ease;
-    }
-    .nav a:hover::after, .nav a.active::after { width: 80%; }
-
-    /* Hero */
-    .hero {
-      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-      padding: 8rem 0 6rem; text-align: center; position: relative; overflow: hidden;
-    }
-    .hero::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(100, 255, 218, 0.1) 0%, transparent 50%);
+    /* Brand: tiny name used as a logo — hidden until user scrolls past hero */
+    .brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
       pointer-events: none;
     }
-    .hero-content { position: relative; z-index: 2; }
-    .hero h1 {
-      font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem;
-      background: linear-gradient(135deg, var(--text-primary), var(--primary));
-      background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      line-height: 1.2;
-    }
-    .hero .subtitle { font-size: 1.4rem; color: var(--primary); margin-bottom: 0.5rem; font-weight: 500; }
-    .hero .institution { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 3rem; }
-    .hero .contact { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
-
-    .contact-btn {
-      background: rgba(100, 255, 218, 0.1); color: var(--primary);
-      padding: 1rem 2rem; border-radius: 3rem; text-decoration: none;
-      backdrop-filter: blur(10px); border: 1px solid rgba(100, 255, 218, 0.3);
-      transition: all 0.3s ease; font-weight: 500; position: relative; overflow: hidden;
-    }
-    .contact-btn::before {
-      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(100, 255, 218, 0.2), transparent);
-      transition: left 0.5s ease;
-    }
-    .contact-btn:hover::before { left: 100%; }
-    .contact-btn:hover {
-      background: rgba(100, 255, 218, 0.2); transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(100, 255, 218, 0.2);
+    .header.scrolled .brand {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
-    /* Main */
-    .main { padding: 4rem 0; }
-    .section { margin-bottom: 6rem; }
+    .nav { display: flex; gap: 0.25rem; align-items: center; }
+    .nav a {
+      text-decoration: none; color: var(--text-secondary); font-weight: 500;
+      padding: 0.55rem 1.1rem; border-radius: 0.4rem;
+      transition: all 0.25s ease; font-size: 0.92rem; letter-spacing: 0.01em;
+    }
+    .nav a:hover, .nav a.active { color: var(--primary); background: rgba(100,255,218,0.08); }
+
+    /* Theme toggle */
+    .theme-toggle {
+      position: fixed; top: 14px; right: 16px;
+      width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border);
+      background: var(--bg-card); color: var(--text-secondary);
+      font-size: 16px; cursor: pointer; z-index: 1002;
+      box-shadow: 0 2px 10px var(--shadow);
+      transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
+    }
+    .theme-toggle:hover { border-color: var(--primary); color: var(--primary); transform: scale(1.08); }
+
+    /* ── HERO: split layout — photo left, intro right ────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      background: linear-gradient(140deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      position: relative; overflow: hidden;
+      padding: 5rem 0 3rem;
+    }
+
+    /* Subtle radial glow */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 55% at 20% 50%, rgba(100,255,218,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 60%, rgba(78,205,196,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 5rem;
+      align-items: center;
+      position: relative; z-index: 2;
+      width: 100%;
+    }
+
+    /* Photo side */
+    .hero-photo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.4rem;
+    }
+
+    .hero-photo {
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 15% 15%;
+      border: 3px solid rgba(100,255,218,0.3);
+      box-shadow:
+        0 0 0 8px rgba(100,255,218,0.06),
+        0 20px 60px rgba(2,12,27,0.5);
+      transition: box-shadow 0.4s ease;
+    }
+    .hero-photo:hover {
+      box-shadow:
+        0 0 0 12px rgba(100,255,218,0.1),
+        0 24px 70px rgba(2,12,27,0.6);
+    }
+
+    .hero-photo-links {
+      display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;
+    }
+
+    .profile-link {
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.04em;
+      color: var(--text-muted); text-decoration: none; padding: 0.35rem 0.9rem;
+      border: 1px solid var(--border); border-radius: 2rem;
+      transition: all 0.25s ease;
+    }
+    .profile-link:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Text side */
+    .hero-text { }
+
+    .hero-greeting {
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 0.12em;
+      color: var(--primary); text-transform: uppercase;
+      margin-bottom: 1rem; opacity: 0;
+      animation: fadeUp 0.7s ease 0.1s forwards;
+    }
+
+    .hero-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--text-primary);
+      margin-bottom: 0.3rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.2s forwards;
+    }
+
+    .hero-name .chinese {
+      font-size: 0.55em;
+      color: var(--text-secondary);
+      font-style: italic;
+      display: inline-block;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+
+    .hero-role {
+      font-size: 1.1rem; font-weight: 300;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.3s forwards;
+    }
+
+    .hero-inst {
+      font-size: 0.92rem; color: var(--text-muted);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.35s forwards;
+    }
+
+    .hero-bio {
+      font-size: 1rem; color: var(--text-secondary);
+      line-height: 1.75; max-width: 480px;
+      margin-bottom: 2.2rem;
+      border-left: 2px solid rgba(100,255,218,0.3);
+      padding-left: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.45s forwards;
+    }
+
+    .hero-cta {
+      display: flex; gap: 0.85rem; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.55s forwards;
+    }
+
+    .cta-btn {
+      padding: 0.7rem 1.5rem; border-radius: 0.5rem;
+      font-size: 0.88rem; font-weight: 500;
+      text-decoration: none; transition: all 0.25s ease;
+      letter-spacing: 0.01em;
+    }
+    .cta-primary {
+      background: rgba(100,255,218,0.12);
+      color: var(--primary);
+      border: 1px solid rgba(100,255,218,0.35);
+    }
+    .cta-primary:hover {
+      background: rgba(100,255,218,0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(100,255,218,0.15);
+    }
+    .cta-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .cta-ghost:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── MAIN CONTENT ────────────────────────────────────── */
+    .main { padding: 5rem 0; }
+    .section { margin-bottom: 5.5rem; }
 
     .section-title {
-      font-size: 2.2rem; font-weight: 700; margin-bottom: 3rem;
-      text-align: center; color: var(--text-primary); position: relative;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.9rem; font-weight: 400;
+      margin-bottom: 2.5rem;
+      color: var(--text-primary);
+      position: relative; display: inline-block;
     }
     .section-title::after {
-      content: ''; position: absolute; bottom: -1rem; left: 50%; transform: translateX(-50%);
-      width: 60px; height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 2px;
+      content: '';
+      position: absolute; bottom: -0.5rem; left: 0;
+      width: 2.5rem; height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 2px;
     }
 
     /* Research grid */
-    .research-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2rem; }
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
 
     .research-card {
-      background: var(--bg-card); border-radius: 1rem; padding: 2.5rem;
-      border: 1px solid var(--border); transition: all 0.4s ease; position: relative; overflow: hidden;
+      background: var(--bg-card);
+      border-radius: 0.85rem;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      transition: all 0.35s ease;
+      position: relative; overflow: hidden;
     }
     .research-card::before {
-      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
       background: linear-gradient(90deg, var(--primary), var(--accent));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.35s ease;
     }
-    .research-card:hover {
-      transform: translateY(-8px); box-shadow: 0 20px 40px rgba(2, 12, 27, 0.4);
-      border-color: var(--primary);
+    .research-card:hover { transform: translateY(-5px); border-color: rgba(100,255,218,0.25); }
+    .research-card:hover::before { transform: scaleX(1); }
+    [data-theme="light"] .research-card:hover { box-shadow: 0 12px 36px rgba(0,0,0,0.08); }
+
+    .research-card h3 {
+      font-size: 1.1rem; font-weight: 600;
+      margin-bottom: 0.75rem; color: var(--text-primary);
+      line-height: 1.4;
     }
-    [data-theme="light"] .research-card:hover { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); }
-    .research-card:hover::before { background: linear-gradient(90deg, var(--accent), var(--secondary)); }
-    .research-card h3 { font-size: 1.4rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary); }
-    .research-card p { color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7; }
+    .research-card p { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; margin-bottom: 1rem; }
 
     .research-status {
-      display: inline-block; padding: 0.5rem 1rem; border-radius: 2rem;
-      font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+      display: inline-block; padding: 0.3rem 0.85rem;
+      border-radius: 2rem; font-size: 0.78rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
     }
-    .status-published { background: rgba(76,175,80,0.2); color: #4caf50; border: 1px solid rgba(76,175,80,0.3); }
-    .status-progress  { background: rgba(255,193,7,0.2); color: #ffc107; border: 1px solid rgba(255,193,7,0.3); }
-    .status-planning  { background: rgba(100,255,218,0.2); color: var(--primary); border: 1px solid rgba(100,255,218,0.3); }
+    .status-published { background: rgba(76,175,80,0.15); color: #5cb85c; border: 1px solid rgba(76,175,80,0.25); }
+    .status-progress  { background: rgba(255,193,7,0.15); color: #e6b800; border: 1px solid rgba(255,193,7,0.25); }
+    .status-accepted  { background: rgba(100,255,218,0.12); color: var(--primary); border: 1px solid rgba(100,255,218,0.25); }
 
-    /* News */
-    .news-list { max-width: 800px; margin: 0 auto; }
+    /* News / Updates */
+    .news-list { display: flex; flex-direction: column; gap: 1rem; max-width: 820px; }
+
     .news-item {
-      background: var(--bg-card); border-radius: 1rem; padding: 2rem; margin-bottom: 1.5rem;
-      border: 1px solid var(--border); transition: all 0.3s ease;
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 1.5rem;
+      align-items: baseline;
+      padding: 1.2rem 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      transition: all 0.25s ease;
     }
-    .news-item:hover { transform: translateX(10px); box-shadow: 0 10px 30px rgba(2,12,27,0.3); }
-    [data-theme="light"] .news-item:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-    .news-date { color: var(--accent); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-    .news-content { color: var(--text-secondary); margin-top: 0.8rem; line-height: 1.6; }
+    .news-item:hover { border-color: rgba(100,255,218,0.2); transform: translateX(4px); }
+    .news-date {
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em;
+      color: var(--accent); text-transform: uppercase; white-space: nowrap;
+    }
+    .news-content { color: var(--text-secondary); font-size: 0.93rem; line-height: 1.55; }
+    .news-content strong { color: var(--text-primary); font-weight: 600; }
+    .news-content a { color: var(--primary); text-decoration: none; }
+    .news-content a:hover { text-decoration: underline; }
 
     /* Publications */
+    .pub-list { display: flex; flex-direction: column; gap: 1.25rem; }
+
     .publication {
-      background: var(--bg-card); border-radius: 1rem; padding: 2.5rem; margin-bottom: 2rem;
-      border: 1px solid var(--border); transition: all 0.3s ease; position: relative;
+      background: var(--bg-card);
+      border-radius: 0.85rem; padding: 1.75rem 1.75rem 1.75rem 2rem;
+      border: 1px solid var(--border);
+      border-left: 3px solid rgba(100,255,218,0.35);
+      transition: all 0.3s ease;
     }
-    .publication::before {
-      content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-      background: linear-gradient(180deg, var(--primary), var(--accent)); border-radius: 0 1rem 1rem 0;
+    .publication:hover { transform: translateY(-3px); border-left-color: var(--primary); }
+    [data-theme="light"] .publication:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.07); }
+
+    .pub-title { font-size: 1.05rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.45; }
+    .pub-authors { font-size: 0.87rem; color: var(--text-secondary); margin-bottom: 0.4rem; }
+    .pub-authors strong { color: var(--primary); }
+    .pub-journal { font-size: 0.87rem; color: var(--accent); font-style: italic; margin-bottom: 0.75rem; }
+    .pub-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
+
+    .pub-btn {
+      display: inline-block; font-size: 0.8rem; font-weight: 600;
+      padding: 0.35rem 1rem; border-radius: 2rem;
+      border: 1px solid var(--border); color: var(--text-secondary);
+      text-decoration: none; transition: all 0.25s ease; letter-spacing: 0.03em;
     }
-    .publication:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(2,12,27,0.3); }
-    [data-theme="light"] .publication:hover { box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-    .publication h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary); line-height: 1.4; }
-    .publication .authors { color: var(--text-secondary); margin-bottom: 0.8rem; font-size: 0.95rem; }
-    .publication .authors strong { color: var(--primary); }
-    .publication .journal { color: var(--accent); font-style: italic; font-weight: 500; margin-bottom: 1rem; }
-    .publication .description { color: var(--text-secondary); line-height: 1.6; }
+    .pub-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* "See all" link */
+    .see-all {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-top: 1.5rem; font-size: 0.9rem; font-weight: 500;
+      color: var(--primary); text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.25s ease;
+    }
+    .see-all:hover { border-bottom-color: var(--primary); }
 
     /* Skills */
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 0.75rem;
+    }
     .skill-tag {
-      background: var(--bg-card); color: var(--text-primary); padding: 1rem 1.5rem;
-      border-radius: 0.8rem; text-align: center; font-weight: 500;
-      border: 1px solid var(--border); transition: all 0.3s ease; position: relative; overflow: hidden;
+      background: var(--bg-card); color: var(--text-secondary);
+      padding: 0.8rem 1rem; border-radius: 0.6rem;
+      text-align: center; font-size: 0.88rem; font-weight: 500;
+      border: 1px solid var(--border); transition: all 0.25s ease;
     }
-    .skill-tag::before {
-      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(100,255,218,0.1), transparent);
-      transition: left 0.5s ease;
+    .skill-tag:hover {
+      background: rgba(100,255,218,0.08);
+      border-color: rgba(100,255,218,0.3);
+      color: var(--primary); transform: translateY(-2px);
     }
-    .skill-tag:hover::before { left: 100%; }
-    .skill-tag:hover { background: rgba(100,255,218,0.1); border-color: var(--primary); transform: translateY(-3px); color: var(--primary); }
 
     /* About */
     .about-card {
-      background: var(--bg-card); border-radius: 1rem; padding: 3rem;
-      border: 1px solid var(--border); max-width: 900px; margin: 0 auto;
+      background: var(--bg-card); border-radius: 0.85rem;
+      padding: 2.5rem; border: 1px solid var(--border);
+      max-width: 820px;
     }
-    .about-card p { color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.05rem; }
+    .about-card p {
+      color: var(--text-secondary); margin-bottom: 1.2rem;
+      line-height: 1.8; font-size: 0.97rem;
+    }
+    .about-card p:last-child { margin-bottom: 0; }
 
     /* Footer */
-    .footer { background: var(--bg-secondary); border-top: 1px solid var(--border); padding: 4rem 0 2rem; margin-top: 6rem; }
-    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 3rem; }
-    .footer h4 { font-weight: 600; margin-bottom: 1.5rem; color: var(--text-primary); font-size: 1.1rem; }
+    .footer {
+      background: var(--bg-secondary); border-top: 1px solid var(--border);
+      padding: 3.5rem 0 2rem; margin-top: 4rem;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2.5rem; margin-bottom: 2.5rem;
+    }
+    .footer h4 { font-weight: 600; margin-bottom: 1.2rem; color: var(--text-primary); font-size: 0.95rem; letter-spacing: 0.04em; text-transform: uppercase; }
     .footer ul { list-style: none; }
-    .footer ul li { margin-bottom: 0.8rem; }
-    .footer a { color: var(--text-secondary); text-decoration: none; transition: all 0.3s ease; }
+    .footer ul li { margin-bottom: 0.65rem; }
+    .footer a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: color 0.25s ease; }
     .footer a:hover { color: var(--primary); }
-    .footer-bottom { border-top: 1px solid var(--border); padding-top: 2rem; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 1.75rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
 
     /* Mobile */
-    @media (max-width: 768px) {
-      .container { padding: 0 1rem; }
-      .header-content { flex-direction: column; gap: 1rem; padding: 1rem 0; }
-      .nav { gap: 1rem; }
-      .nav a { padding: 0.6rem 1rem; font-size: 0.9rem; }
-      .hero { padding: 6rem 0 4rem; }
-      .hero h1 { font-size: 2.5rem; }
-      .hero .subtitle { font-size: 1.2rem; }
-      .contact { flex-direction: column; align-items: center; gap: 1rem; }
-      .research-grid { grid-template-columns: 1fr; }
-      .skills-grid { grid-template-columns: repeat(2, 1fr); }
-      .section-title { font-size: 1.8rem; }
+    @media (max-width: 800px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
+      .hero-photo { width: 180px; height: 180px; }
+      .hero-bio { border-left: none; padding-left: 0; margin: 0 auto 2rem; }
+      .hero-cta { justify-content: center; }
+      .news-item { grid-template-columns: 1fr; gap: 0.4rem; }
+      .container { padding: 0 1.25rem; }
+      .hero { padding: 5.5rem 0 3rem; }
     }
 
+    @media (max-width: 480px) {
+      .nav a { padding: 0.45rem 0.8rem; font-size: 0.85rem; }
+      .section-title { font-size: 1.55rem; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Scroll animation */
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
+      from { opacity: 0; transform: translateY(22px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .fade-in { animation: fadeInUp 0.6s ease-out; }
+    .fade-in { animation: fadeInUp 0.55s ease-out; }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Compact navigation header -->
   <header class="header" id="header">
     <div class="container">
       <div class="header-content">
-        <div class="logo">
-          <img src="profile.jpg" alt="Xi Ding" class="avatar">
-          <div class="header-info">
-            <h1>Xi DING</h1>
-            <div class="title">PhD Candidate @ FBN Germany</div>
-          </div>
-        </div>
+        <a href="#home" class="brand">Xi DING</a>
         <nav class="nav">
           <a href="#home" class="active">Home</a>
           <a href="#research">Research</a>
@@ -289,53 +469,82 @@
     </div>
   </header>
 
-  <!-- Theme Toggle -->
+  <!-- Theme toggle -->
   <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
 
-  <!-- Hero -->
+  <!-- ── HERO ────────────────────────────────────────────── -->
   <section class="hero" id="home">
     <div class="container">
-      <div class="hero-content">
-        <h1>Xi DING</h1>
-        <div class="subtitle">Computational Animal Breeding &amp; Genetics</div>
-        <div class="institution">Leibniz Institute for Farm Animal Biology (FBN), Germany</div>
-        <div class="contact">
-          <a href="mailto:dingx714@outlook.com" class="contact-btn">dingx714@outlook.com</a>
-          <a href="mailto:ding@fbn-dummerstorf.de" class="contact-btn">ding@fbn-dummerstorf.de</a>
-          <a href="https://www.researchgate.net/profile/Xi-Ding-10" class="contact-btn" target="_blank">ResearchGate</a>
+      <div class="hero-inner">
+
+        <!-- Photo column -->
+        <div class="hero-photo-wrap">
+          <img src="profile.jpg" alt="Xi Ding" class="hero-photo">
+          <div class="hero-photo-links">
+            <a href="https://www.researchgate.net/profile/Xi-Ding-10" target="_blank" class="profile-link">ResearchGate</a>
+            <a href="https://orcid.org/0009-0004-4132-7867" target="_blank" class="profile-link">ORCID</a>
+            <a href="cv.html" class="profile-link">CV</a>
+          </div>
         </div>
+
+        <!-- Text column -->
+        <div class="hero-text">
+          <div class="hero-greeting">Computational Animal Breeding &amp; Genetics</div>
+
+          <h1 class="hero-name">
+            Xi DING
+            <span class="chinese">丁曦</span>
+          </h1>
+
+          <div class="hero-role">PhD Candidate</div>
+          <div class="hero-inst">Leibniz Institute for Farm Animal Biology (FBN) · Germany</div>
+
+          <p class="hero-bio">
+            I apply computational methods combining statistical modelling and machine learning
+            to address complex challenges in livestock genetics — from quantitative trait analysis
+            and genomic diversity to GWAS and breeding value estimation.
+          </p>
+
+          <div class="hero-cta">
+            <a href="mailto:dingx714@outlook.com" class="cta-btn cta-primary">✉ dingx714@outlook.com</a>
+            <a href="mailto:ding@fbn-dummerstorf.de" class="cta-btn cta-ghost">FBN Email</a>
+            <a href="research.html" class="cta-btn cta-ghost">Research →</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Main -->
+  <!-- ── MAIN ───────────────────────────────────────────── -->
   <main class="main">
     <div class="container">
 
-      <!-- Research -->
+      <!-- Current Research -->
       <section class="section" id="research">
         <h2 class="section-title">Current Research</h2>
         <div class="research-grid">
 
           <div class="research-card">
             <h3>Genetic Parameter Identifiability</h3>
-            <p>Investigating identifiability challenges in massively deep pedigree structures using mouse populations with 40+ generations.</p>
+            <p>Identifiability challenges in massively deep pedigree structures using mouse populations with 40+ generations. Diagnostic methods for BLUP/GBLUP models.</p>
             <span class="research-status status-published">Published 2025</span>
           </div>
 
           <div class="research-card">
             <h3>Body Weight Variation After Long-term Selection</h3>
-            <p>Investigating how body weight variation changes in animal populations after extended periods of selective breeding and genetic pressure.</p>
+            <p>How body weight variation evolves in animal populations after extended selective breeding — quantitative genetic analysis across multiple DU6 mouse generations.</p>
             <span class="research-status status-progress">Submitted 2025</span>
           </div>
 
           <div class="research-card">
             <h3>Litter Weight Genetics</h3>
-            <p>Estimating individual genetic covariances from litter-level weight data in mouse populations — verifying the method developed by Ricarda Jahnel.</p>
-            <span class="research-status status-published">Near Acceptance 2026</span>
+            <p>Estimating individual genetic covariances from litter-level weight data in mice — extending the method developed by Jahnel to a new validation context.</p>
+            <span class="research-status status-accepted">Accepted 2026</span>
           </div>
 
         </div>
+        <a href="research.html" class="see-all">View all research projects →</a>
       </section>
 
       <!-- Latest Updates -->
@@ -344,7 +553,7 @@
         <div class="news-list">
 
           <div class="news-item">
-            <div class="news-date">March 2026</div>
+            <div class="news-date">Mar 2026</div>
             <div class="news-content">
               Paper accepted in <em>Genetics Selection Evolution</em>: "A comparative study on recombination activity in cattle" —
               Wittenburg, Melzer, Abdollahi Sisi, <strong>Ding</strong>, Seefried
@@ -354,28 +563,27 @@
           <div class="news-item">
             <div class="news-date">Early 2026</div>
             <div class="news-content">
-              Second manuscript near acceptance: "Genetic Covariances for Individual Birth Weight from Litter Weight Data in Mice" —
-              <strong>Xi Ding</strong>, Norbert Reinsch
+              Paper accepted: "Genetic Covariances for Individual Birth Weight from Litter Weight Data in Mice" — <strong>Xi Ding</strong>, Norbert Reinsch
             </div>
           </div>
 
           <div class="news-item">
-            <div class="news-date">September 2025</div>
+            <div class="news-date">Sep 2025</div>
             <div class="news-content">
-              Created comprehensive
-              <a href="https://xd714.github.io/All_of_statistics/" target="_blank" style="color:var(--primary);text-decoration:none;">All of Statistics</a>
-              reference guide for personal statistical learning
+              Set up a personal
+              <a href="https://xd714.github.io/All_of_statistics/" target="_blank">All of Statistics</a>
+              website as a self-reference for statistical concepts
             </div>
           </div>
 
           <div class="news-item">
-            <div class="news-date">January 2025</div>
-            <div class="news-content">Paper published in <em>Journal of Animal Breeding and Genetics</em> on genetic parameter identifiability</div>
+            <div class="news-date">Jan 2025</div>
+            <div class="news-content">Paper published in <em>Journal of Animal Breeding and Genetics</em> on genetic parameter identifiability in deep pedigrees</div>
           </div>
 
           <div class="news-item">
-            <div class="news-date">March 2023</div>
-            <div class="news-content">CLARITY Shiny app published in <em>Frontiers in Genetics</em></div>
+            <div class="news-date">Mar 2023</div>
+            <div class="news-content">CLARITY Shiny app published in <em>Frontiers in Genetics</em> — interactive bovine physical-genetic map visualisation</div>
           </div>
 
         </div>
@@ -383,62 +591,69 @@
 
       <!-- Key Publications -->
       <section class="section" id="publications">
-        <h2 class="section-title">Key Publications &amp; Resources</h2>
+        <h2 class="section-title">Selected Publications</h2>
+        <div class="pub-list">
 
-        <div class="publication">
-          <h3>A comparative study on recombination activity in cattle</h3>
-          <div class="authors">Dörte Wittenburg, Nina Melzer, Nayyer Abdollahi Sisi, <strong>Xi Ding</strong>, Franz R Seefried</div>
-          <div class="journal">Genetics Selection Evolution, 2025 — Accepted</div>
-          <div class="description">Comparative analysis of recombination activity patterns across cattle populations, providing insights into genetic diversity and breeding efficiency in livestock genetics.</div>
-        </div>
-
-        <div class="publication">
-          <h3>Genetic Covariances for Individual Birth Weight from Litter Weight Data in Mice</h3>
-          <div class="authors"><strong>Xi Ding</strong>, Norbert Reinsch</div>
-          <div class="journal">Near acceptance, 2026</div>
-          <div class="description">Novel approach to estimating individual genetic covariances from litter-level data, addressing challenges in mouse breeding where individual birth weights are difficult to measure.</div>
-        </div>
-
-        <div class="publication">
-          <h3>On the Identifiability of Genetic Parameters for Growth in Mice With a Massively Deep Pedigree</h3>
-          <div class="authors"><strong>Xi Ding</strong>, A. A. Musa, Norbert Reinsch</div>
-          <div class="journal">Journal of Animal Breeding and Genetics, 2025</div>
-          <div class="description">Study investigating genetic parameter identifiability in growth models using massively deep pedigree structures in mouse populations.</div>
-        </div>
-
-        <div class="publication">
-          <h3>CLARITY: a Shiny app for interactive visualisation of the bovine physical-genetic map</h3>
-          <div class="authors">Nina Melzer, Saber Qanbari, <strong>Xi Ding</strong>, Dörte Wittenburg</div>
-          <div class="journal">Frontiers in Genetics, 2023</div>
-          <div class="description">Interactive R Shiny application for exploring bovine genetic and physical maps, visualising relationships between genetic and physical distances.</div>
-        </div>
-
-        <div class="publication">
-          <h3>All of Statistics — Personal Reference Guide</h3>
-          <div class="authors"><strong>Xi Ding</strong></div>
-          <div class="journal">
-            <a href="https://xd714.github.io/All_of_statistics/" target="_blank" style="color:var(--primary);">Personal Reference, 2025</a>
+          <div class="publication">
+            <div class="pub-title">A comparative study on recombination activity in cattle</div>
+            <div class="pub-authors">Dörte Wittenburg, Nina Melzer, Nayyer Abdollahi Sisi, <strong>Xi Ding</strong>, Franz R Seefried</div>
+            <div class="pub-journal">Genetics Selection Evolution, 2025 — Accepted</div>
+            <div class="pub-desc">Comparative analysis of recombination activity patterns across cattle populations, providing insights into genetic diversity and breeding efficiency.</div>
           </div>
-          <div class="description">Comprehensive HTML guide serving as a personal reference for essential statistical concepts in quantitative genetics and data science research.</div>
-        </div>
 
+          <div class="publication">
+            <div class="pub-title">Genetic Covariances for Individual Birth Weight from Litter Weight Data in Mice</div>
+            <div class="pub-authors"><strong>Xi Ding</strong>, Norbert Reinsch</div>
+            <div class="pub-journal">Animal, 2026 — Accepted</div>
+            <div class="pub-desc">Novel approach to estimating individual genetic covariances from litter-level data, addressing a core challenge in mouse breeding phenotyping.</div>
+          </div>
+
+          <div class="publication">
+            <div class="pub-title">On the Identifiability of Genetic Parameters for Growth in Mice With a Massively Deep Pedigree</div>
+            <div class="pub-authors"><strong>Xi Ding</strong>, A. A. Musa, Norbert Reinsch</div>
+            <div class="pub-journal">Journal of Animal Breeding and Genetics, 2025</div>
+            <div class="pub-desc">Investigates identifiability of genetic parameters in growth models using 40+ generation pedigree structures — with diagnostic tools for variance component estimation.</div>
+            <a href="https://onlinelibrary.wiley.com/doi/10.1111/jbg.12938" target="_blank" class="pub-btn">DOI ↗</a>
+          </div>
+
+          <div class="publication">
+            <div class="pub-title">CLARITY: a Shiny app for interactive visualisation of the bovine physical-genetic map</div>
+            <div class="pub-authors">Nina Melzer, Saber Qanbari, <strong>Xi Ding</strong>, Dörte Wittenburg</div>
+            <div class="pub-journal">Frontiers in Genetics, 2023</div>
+            <div class="pub-desc">Interactive R Shiny application for exploring bovine genetic and physical maps across the genome.</div>
+            <a href="https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2023.1082782/full" target="_blank" class="pub-btn">DOI ↗</a>
+          </div>
+
+        </div>
+        <a href="publications.html" class="see-all">Full publication list →</a>
       </section>
 
-      <!-- Technical Skills -->
+      <!-- Personal Resources -->
+      <section class="section">
+        <h2 class="section-title">Personal Resources</h2>
+        <div class="about-card">
+          <p>
+            <a href="https://xd714.github.io/All_of_statistics/" target="_blank" style="color:var(--primary);text-decoration:none;font-weight:600;">All of Statistics ↗</a>
+            — a website generated as a personal self-reference for statistical concepts relevant to my research work.
+          </p>
+        </div>
+      </section>
+
+      <!-- Technical Expertise -->
       <section class="section">
         <h2 class="section-title">Technical Expertise</h2>
         <div class="skills-grid">
-          <div class="skill-tag">Python</div>
           <div class="skill-tag">R / RStudio</div>
+          <div class="skill-tag">Python</div>
           <div class="skill-tag">ASReml</div>
           <div class="skill-tag">Bash / Linux</div>
           <div class="skill-tag">Git / GitHub</div>
           <div class="skill-tag">BLUP / GBLUP</div>
           <div class="skill-tag">Mixed Models</div>
-          <div class="skill-tag">Statistical Modelling</div>
+          <div class="skill-tag">Stat Modelling</div>
           <div class="skill-tag">Machine Learning</div>
-          <div class="skill-tag">Quantitative Genetics</div>
-          <div class="skill-tag">Data Visualisation</div>
+          <div class="skill-tag">Quant. Genetics</div>
+          <div class="skill-tag">Data Pipelines</div>
           <div class="skill-tag">SAS</div>
         </div>
       </section>
@@ -448,8 +663,9 @@
         <h2 class="section-title">About</h2>
         <div class="about-card">
           <p>I apply computational methods for animal breeding and genetics at FBN Germany, working with statistical modelling, machine learning, and genomic analysis to address real challenges in livestock production.</p>
-          <p>My journey started at China Agricultural University, continued through an exchange at the University of Wisconsin, and brought me to Germany for my Master's at the University of Rostock. After industry experience at KWS LOCHOW in plant breeding, I returned to research for my PhD at FBN.</p>
-          <p>Across research and industry, I have always been drawn to the intersection of quantitative genetics and data — where biological questions meet computational solutions, with an eye toward sustainable food production and global impact.</p>
+          <p>My path started at China Agricultural University, continued through an exchange at the University of Wisconsin, and brought me to Germany for a Master's at the University of Rostock. After industry experience at KWS LOCHOW in plant breeding, I returned to research for my PhD at FBN — completing April 2026.</p>
+          <p>Across research and industry, I am drawn to the intersection of quantitative genetics and data science, where biological questions meet computational solutions, with an eye toward sustainable food production and global impact.</p>
+          <p style="margin-top: 1.2rem;"><a href="about.html" class="see-all">Read more →</a></p>
         </div>
       </section>
 
@@ -468,7 +684,7 @@
           </ul>
         </div>
         <div>
-          <h4>Academic Profiles</h4>
+          <h4>Academic</h4>
           <ul>
             <li><a href="https://www.researchgate.net/profile/Xi-Ding-10" target="_blank">ResearchGate</a></li>
             <li><a href="https://orcid.org/0009-0004-4132-7867" target="_blank">ORCID</a></li>
@@ -477,12 +693,12 @@
         <div>
           <h4>Institution</h4>
           <ul>
-            <li><a href="https://www.fbn-dummerstorf.de/" target="_blank">FBN Institute</a></li>
+            <li><a href="https://www.fbn-dummerstorf.de/" target="_blank">FBN Dummerstorf</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 Xi DING. All rights reserved. Last updated: March 2026</p>
+        <p>&copy; 2026 Xi DING. All rights reserved. · Last updated: March 2026</p>
       </div>
     </div>
   </footer>
@@ -490,56 +706,51 @@
   <script>
     // Theme toggle
     const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
     const savedTheme = localStorage.getItem('theme') || 'dark';
-    body.setAttribute('data-theme', savedTheme);
-
-    function updateThemeIcon() {
-      themeToggle.textContent = body.getAttribute('data-theme') === 'dark' ? '🌙' : '☀️';
-    }
-    updateThemeIcon();
-
+    document.body.setAttribute('data-theme', savedTheme);
+    function updateIcon() { themeToggle.textContent = document.body.getAttribute('data-theme') === 'dark' ? '🌙' : '☀️'; }
+    updateIcon();
     themeToggle.addEventListener('click', () => {
-      const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      body.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      updateThemeIcon();
+      const t = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', t);
+      localStorage.setItem('theme', t);
+      updateIcon();
     });
 
-    // Header scroll effect
+    // Header scroll: show brand name + scrolled shadow
+    const header = document.getElementById('header');
     window.addEventListener('scroll', () => {
-      document.getElementById('header').classList.toggle('scrolled', window.scrollY > 100);
-    });
-
-    // Smooth scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          window.scrollTo({ top: target.offsetTop - document.querySelector('.header').offsetHeight, behavior: 'smooth' });
-        }
-      });
-    });
+      header.classList.toggle('scrolled', window.scrollY > window.innerHeight * 0.7);
+    }, { passive: true });
 
     // Active nav on scroll
     window.addEventListener('scroll', () => {
       let current = '';
-      document.querySelectorAll('section[id]').forEach(section => {
-        if (scrollY >= section.offsetTop - 150) current = section.getAttribute('id');
+      document.querySelectorAll('section[id]').forEach(s => {
+        if (window.scrollY >= s.offsetTop - 100) current = s.id;
       });
-      document.querySelectorAll('.nav a').forEach(link => {
-        link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+      document.querySelectorAll('.nav a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
+      });
+    }, { passive: true });
+
+    // Smooth scroll for hash links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          window.scrollTo({ top: target.offsetTop - 62, behavior: 'smooth' });
+        }
       });
     });
 
     // Fade-in on scroll
-    const observer = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('fade-in'); }),
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
-    document.querySelectorAll('.research-card, .publication, .news-item, .about-card').forEach(el => observer.observe(el));
-  </script>
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('fade-in'); });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
+    document.querySelectorAll('.research-card, .publication, .news-item, .about-card, .skill-tag').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>
